@@ -1,6 +1,6 @@
 import streamlit as st
 from utils.constants import PAGE_CONFIG, MODULES
-from utils.styles import load_css
+from utils.styles import load_cosmos_theme
 from utils.components import render_header, render_footer
 from utils.session import init_session_state
 from modules.main_menu import render_main_menu
@@ -8,20 +8,23 @@ from modules.main_menu import render_main_menu
 # 1. CẤU HÌNH HỆ THỐNG
 st.set_page_config(**PAGE_CONFIG)
 
-# 2. KHỞI TẠO HẠ TẦNG
-load_css()
+# 2. KHỞI TẠO HẠ TẦNG (Tải theme Cyberpunk cực mạnh)
+load_cosmos_theme()
 init_session_state()
 
 def main():
-    # Luôn hiển thị Header
+    # Luôn hiển thị Header chuẩn Prototype
     render_header()
 
     # 3. ĐIỀU HƯỚNG (ROUTER) TRUNG TÂM
     if st.session_state.active_tab is None:
+        # Spacer để đẩy Menu xuống giữa màn hình như Prototype
+        st.write("<div style='height: 50px'></div>", unsafe_allow_html=True)
         render_main_menu()
         render_footer()
     else:
-        # Nút Quay lại (Dùng chung cho mọi Module)
+        # Nút Quay lại
+        st.write("<div style='height: 20px'></div>", unsafe_allow_html=True)
         if st.button("⬅️ TRỞ VỀ TRẠM CHỈ HUY (MENU)"):
             st.session_state.active_tab = None
             st.rerun()
@@ -29,8 +32,7 @@ def main():
         tab_id = st.session_state.active_tab
         current_mod = next((m for m in MODULES if m['id'] == tab_id), None)
 
-        # GỌI MODULE TƯƠNG ỨNG (Dynamic Import Pattern)
-        # Cách tách này giúp app.py không bao giờ bị phình to
+        # GỌI MODULE TƯƠNG ỨNG
         if tab_id == 6:
             from modules.admin import render_admin_zone
             render_admin_zone(current_mod)
