@@ -27,6 +27,7 @@ def load_cosmos_theme():
         header {visibility: hidden;}
         .stDeployButton {display:none;}
         footer {visibility: hidden;}
+        #MainMenu {visibility: hidden;}
 
         /* Canvas Sao bay nằm dưới cùng */
         #warp-canvas {
@@ -84,34 +85,43 @@ def load_cosmos_theme():
         }
 
         /* --- 5. MÀU SẮC RIÊNG CHO TỪNG LOẠI TILE (Mapping ID) --- */
+        /* Sử dụng CSS Selector thông minh để bắt màu dựa trên tên nút */
         
         /* Tổng quan (Blue) */
-        div.stButton > button:has(div:contains("TỔNG QUAN")) { border-bottom-color: #3b82f6 !important; color: #60a5fa !important; }
-        div.stButton > button:has(div:contains("TỔNG QUAN")):hover { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6) !important; border-bottom-color: #60a5fa !important; }
+        div.stButton > button:has(div:contains("1.")) { border-bottom-color: #3b82f6 !important; color: #60a5fa !important; }
+        div.stButton > button:has(div:contains("1.")):hover { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6) !important; border-bottom-color: #60a5fa !important; }
 
         /* Tiền lương (Amber) */
-        div.stButton > button:has(div:contains("TIỀN LƯƠNG")) { border-bottom-color: #f59e0b !important; color: #fbbf24 !important; }
-        div.stButton > button:has(div:contains("TIỀN LƯƠNG")):hover { box-shadow: 0 0 40px rgba(245, 158, 11, 0.6) !important; border-bottom-color: #fbbf24 !important; }
+        div.stButton > button:has(div:contains("2.")) { border-bottom-color: #f59e0b !important; color: #fbbf24 !important; }
+        div.stButton > button:has(div:contains("2.")):hover { box-shadow: 0 0 40px rgba(245, 158, 11, 0.6) !important; border-bottom-color: #fbbf24 !important; }
 
         /* KPI (Rose) */
-        div.stButton > button:has(div:contains("KPI")) { border-bottom-color: #f43f5e !important; color: #fb7185 !important; }
-        div.stButton > button:has(div:contains("KPI")):hover { box-shadow: 0 0 40px rgba(244, 63, 94, 0.6) !important; border-bottom-color: #fb7185 !important; }
+        div.stButton > button:has(div:contains("3.")) { border-bottom-color: #f43f5e !important; color: #fb7185 !important; }
+        div.stButton > button:has(div:contains("3.")):hover { box-shadow: 0 0 40px rgba(244, 63, 94, 0.6) !important; border-bottom-color: #fb7185 !important; }
 
-        /* Nhân sự (Emerald - Sửa thành Rose theo logic cũ hoặc Emerald theo màu gốc) -> Để Emerald cho đẹp */
-        div.stButton > button:has(div:contains("NHÂN SỰ")) { border-bottom-color: #10b981 !important; color: #34d399 !important; }
-        div.stButton > button:has(div:contains("NHÂN SỰ")):hover { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6) !important; border-bottom-color: #34d399 !important; }
+        /* Nhân sự (Emerald) */
+        div.stButton > button:has(div:contains("4.")) { border-bottom-color: #10b981 !important; color: #34d399 !important; }
+        div.stButton > button:has(div:contains("4.")):hover { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6) !important; border-bottom-color: #34d399 !important; }
 
         /* Bảo hiểm (Cyan) */
-        div.stButton > button:has(div:contains("BẢO HIỂM")) { border-bottom-color: #06b6d4 !important; color: #22d3ee !important; }
-        div.stButton > button:has(div:contains("BẢO HIỂM")):hover { box-shadow: 0 0 40px rgba(6, 182, 212, 0.6) !important; border-bottom-color: #22d3ee !important; }
+        div.stButton > button:has(div:contains("5.")) { border-bottom-color: #06b6d4 !important; color: #22d3ee !important; }
+        div.stButton > button:has(div:contains("5.")):hover { box-shadow: 0 0 40px rgba(6, 182, 212, 0.6) !important; border-bottom-color: #22d3ee !important; }
         
         /* Admin (Slate) */
-        div.stButton > button:has(div:contains("ADMIN")) { border-bottom-color: #64748b !important; color: #94a3b8 !important; }
-        div.stButton > button:has(div:contains("ADMIN")):hover { box-shadow: 0 0 40px rgba(148, 163, 184, 0.6) !important; border-bottom-color: #cbd5e1 !important; }
+        div.stButton > button:has(div:contains("6.")) { border-bottom-color: #64748b !important; color: #94a3b8 !important; }
+        div.stButton > button:has(div:contains("6.")):hover { box-shadow: 0 0 40px rgba(148, 163, 184, 0.6) !important; border-bottom-color: #cbd5e1 !important; }
+
+        /* Chấm công (Emerald/Blue mix) */
+        div.stButton > button:has(div:contains("7.")) { border-bottom-color: #10b981 !important; color: #34d399 !important; }
+        div.stButton > button:has(div:contains("7.")):hover { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6) !important; border-bottom-color: #34d399 !important; }
+
+        /* Hậu cần (Orange) */
+        div.stButton > button:has(div:contains("8.")) { border-bottom-color: #f97316 !important; color: #fdba74 !important; }
+        div.stButton > button:has(div:contains("8.")):hover { box-shadow: 0 0 40px rgba(249, 115, 22, 0.6) !important; border-bottom-color: #fdba74 !important; }
 
         /* AI (Violet) */
-        div.stButton > button:has(div:contains("TITAN AI")) { border-bottom-color: #8b5cf6 !important; color: #a78bfa !important; }
-        div.stButton > button:has(div:contains("TITAN AI")):hover { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6) !important; border-bottom-color: #c4b5fd !important; }
+        div.stButton > button:has(div:contains("9.")) { border-bottom-color: #8b5cf6 !important; color: #a78bfa !important; }
+        div.stButton > button:has(div:contains("9.")):hover { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6) !important; border-bottom-color: #c4b5fd !important; }
 
 
         /* --- 6. ANIMATION KEYFRAMES (Copy từ HTML) --- */
@@ -127,10 +137,13 @@ def load_cosmos_theme():
 
         </style>
 
-        <!-- SCRIPT CANVAS SAO BAY (Copy nguyên bản JS) -->
+        <!-- SCRIPT CANVAS SAO BAY (Javascript chạy nền) -->
         <script>
-            const canvas = document.getElementById('warp-canvas');
-            if(canvas) {
+            // Tự động tìm và tạo canvas nếu chưa có
+            let canvas = document.getElementById('warp-canvas');
+            if(!canvas) {
+                // Nếu chưa có (Streamlit chưa render kịp), script này sẽ đợi
+            } else {
                 const ctx = canvas.getContext('2d');
                 let width, height, stars = [];
                 const numStars = 200, speed = 0.2; // Tốc độ giống bản gốc
@@ -183,7 +196,6 @@ def load_cosmos_theme():
                 }
 
                 window.addEventListener('resize', () => { resize(); init(); });
-                // Khởi chạy
                 init();
             }
         </script>
