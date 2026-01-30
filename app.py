@@ -19,7 +19,7 @@ def main():
     # 3. ĐIỀU HƯỚNG (ROUTER) TRUNG TÂM
     if st.session_state.active_tab is None:
         # Spacer để đẩy Menu xuống giữa màn hình như Prototype
-        st.write("<div style='height: 50px'></div>", unsafe_allow_html=True)
+        st.write("<div style='height: 30px'></div>", unsafe_allow_html=True)
         render_main_menu()
         render_footer()
     else:
