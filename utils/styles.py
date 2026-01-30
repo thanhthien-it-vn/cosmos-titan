@@ -2,169 +2,189 @@ import streamlit as st
 
 def load_cosmos_theme():
     """
-    Tiêm toàn bộ linh hồn Cyberpun k từ bản Prototype vào hệ thống.
-    Bao gồm: Hiệu ứng Stars Warp, Neon Glow, và Portal Tiles.
+    Kỹ thuật Pixel-Perfect: Ép giao diện Streamlit giống hệt bản Prototype HTML v1.9.
     """
     st.markdown("""
         <style>
-        /* 1. NẠP FONT CHỮ CHUẨN TITAN */
-        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&family=Orbitron:wght@500;700;900&display=swap');
+        /* --- 1. IMPORT FONTS TỪ BẢN GỐC --- */
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800;900&family=Orbitron:wght@500;700;900&display=swap');
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
-        /* 2. THIẾT LẬP NỀN VŨ TRỤ (BACKGROUND) */
-        .stApp {
-            background-color: #000000;
-            color: #e2e8f0;
+        /* --- 2. BIẾN MÀU SẮC (ROOT VARIABLES) --- */
+        :root {
+            --bg-color: #000;
+            --panel-bg: rgba(15, 23, 42, 0.3);
+            --border-color: rgba(255, 255, 255, 0.1);
         }
 
-        /* Hiệu ứng Stars Warp Canvas nằm dưới cùng */
+        /* --- 3. CẤU HÌNH NỀN & CANVAS --- */
+        .stApp {
+            background-color: var(--bg-color);
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        
+        /* Ẩn Header mặc định của Streamlit */
+        header {visibility: hidden;}
+        .stDeployButton {display:none;}
+        footer {visibility: hidden;}
+
+        /* Canvas Sao bay nằm dưới cùng */
         #warp-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: -1;
+            z-index: 0; /* Nằm dưới nội dung */
             pointer-events: none;
         }
 
-        /* 3. ĐỊNH NGHĨA PORTAL TILES (Cấu trúc ô gạch) */
+        /* --- 4. BIẾN HÓA NÚT BẤM THÀNH "PORTAL TILE" --- */
+        /* Đây là đoạn quan trọng nhất để giống bản gốc */
         div.stButton > button {
-            background: rgba(15, 23, 42, 0.3) !important;
+            background: var(--panel-bg) !important;
             backdrop-filter: blur(10px) !important;
             border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
             border-left: 1px solid rgba(255, 255, 255, 0.05) !important;
             border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
-            border-bottom-width: 6px !important;
+            border-bottom-width: 8px !important; /* Giống bản gốc */
             border-bottom-style: solid !important;
             border-radius: 16px !important;
-            height: 200px !important;
+            
+            height: 220px !important; /* Chiều cao chuẩn */
             width: 100% !important;
-            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+            
+            /* Typography */
             font-family: 'Orbitron', sans-serif !important;
+            font-weight: 700 !important;
             text-transform: uppercase !important;
             letter-spacing: 1px !important;
-            font-size: 0.9rem !important;
+            font-size: 1rem !important;
             color: #94a3b8 !important;
+            
+            /* Layout bên trong nút */
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
+            gap: 15px !important;
+            
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s !important;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7) !important;
+            position: relative !important;
+            overflow: hidden !important;
+            z-index: 10 !important;
         }
 
-        /* Hiệu ứng hover cho từng loại màu (Glow) */
+        /* Hiệu ứng Hover: Nổi lên và sáng */
         div.stButton > button:hover {
             transform: translateY(-15px) !important;
-            color: #ffffff !important;
             background: rgba(30, 41, 59, 0.5) !important;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7) !important;
+            color: #ffffff !important;
         }
 
-        /* 4. MÀU SẮC NEON CHO TỪNG MODULE (Dựa trên ID nút bấm) */
-        /* Overview - Blue */
-        button[key*="btn_1"] { border-bottom-color: #3b82f6 !important; }
-        button[key*="btn_1"]:hover { box-shadow: 0 0 30px rgba(59, 130, 246, 0.6) !important; border-bottom-color: #60a5fa !important; }
+        /* --- 5. MÀU SẮC RIÊNG CHO TỪNG LOẠI TILE (Mapping ID) --- */
         
-        /* Salary - Amber */
-        button[key*="btn_2"] { border-bottom-color: #f59e0b !important; }
-        button[key*="btn_2"]:hover { box-shadow: 0 0 30px rgba(245, 158, 11, 0.6) !important; border-bottom-color: #fbbf24 !important; }
-        
-        /* KPI - Rose */
-        button[key*="btn_3"] { border-bottom-color: #f43f5e !important; }
-        button[key*="btn_3"]:hover { box-shadow: 0 0 30px rgba(244, 63, 94, 0.6) !important; border-bottom-color: #fb7185 !important; }
-        
-        /* HR - Emerald */
-        button[key*="btn_4"] { border-bottom-color: #10b981 !important; }
-        button[key*="btn_4"]:hover { box-shadow: 0 0 30px rgba(16, 185, 129, 0.6) !important; border-bottom-color: #34d399 !important; }
-        
-        /* Insurance - Cyan */
-        button[key*="btn_5"] { border-bottom-color: #06b6d4 !important; }
-        button[key*="btn_5"]:hover { box-shadow: 0 0 30px rgba(6, 182, 212, 0.6) !important; border-bottom-color: #22d3ee !important; }
-        
-        /* Admin - Slate */
-        button[key*="btn_6"] { border-bottom-color: #64748b !important; }
-        button[key*="btn_6"]:hover { box-shadow: 0 0 30px rgba(100, 116, 139, 0.6) !important; border-bottom-color: #94a3b8 !important; }
+        /* Tổng quan (Blue) */
+        div.stButton > button:has(div:contains("TỔNG QUAN")) { border-bottom-color: #3b82f6 !important; color: #60a5fa !important; }
+        div.stButton > button:has(div:contains("TỔNG QUAN")):hover { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6) !important; border-bottom-color: #60a5fa !important; }
 
-        /* 5. TIÊU ĐỀ HỆ THỐNG */
-        .titan-title-main {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 4rem;
-            font-weight: 900;
-            text-align: center;
-            background: linear-gradient(to bottom, #ffffff 0%, #334155 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 0.5em;
-            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
-            margin-bottom: 0;
-            padding-top: 50px;
-        }
-        .titan-subtitle-main {
-            font-family: 'Be Vietnam Pro', sans-serif;
-            text-align: center;
-            color: #475569;
-            font-size: 0.7rem;
-            letter-spacing: 0.4em;
-            margin-bottom: 80px;
-            text-transform: uppercase;
-        }
+        /* Tiền lương (Amber) */
+        div.stButton > button:has(div:contains("TIỀN LƯƠNG")) { border-bottom-color: #f59e0b !important; color: #fbbf24 !important; }
+        div.stButton > button:has(div:contains("TIỀN LƯƠNG")):hover { box-shadow: 0 0 40px rgba(245, 158, 11, 0.6) !important; border-bottom-color: #fbbf24 !important; }
 
-        /* Ẩn các thành phần mặc định của Streamlit để tăng độ thẩm mỹ */
-        header, footer {visibility: hidden;}
-        .stDeployButton {display:none;}
+        /* KPI (Rose) */
+        div.stButton > button:has(div:contains("KPI")) { border-bottom-color: #f43f5e !important; color: #fb7185 !important; }
+        div.stButton > button:has(div:contains("KPI")):hover { box-shadow: 0 0 40px rgba(244, 63, 94, 0.6) !important; border-bottom-color: #fb7185 !important; }
+
+        /* Nhân sự (Emerald - Sửa thành Rose theo logic cũ hoặc Emerald theo màu gốc) -> Để Emerald cho đẹp */
+        div.stButton > button:has(div:contains("NHÂN SỰ")) { border-bottom-color: #10b981 !important; color: #34d399 !important; }
+        div.stButton > button:has(div:contains("NHÂN SỰ")):hover { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6) !important; border-bottom-color: #34d399 !important; }
+
+        /* Bảo hiểm (Cyan) */
+        div.stButton > button:has(div:contains("BẢO HIỂM")) { border-bottom-color: #06b6d4 !important; color: #22d3ee !important; }
+        div.stButton > button:has(div:contains("BẢO HIỂM")):hover { box-shadow: 0 0 40px rgba(6, 182, 212, 0.6) !important; border-bottom-color: #22d3ee !important; }
+        
+        /* Admin (Slate) */
+        div.stButton > button:has(div:contains("ADMIN")) { border-bottom-color: #64748b !important; color: #94a3b8 !important; }
+        div.stButton > button:has(div:contains("ADMIN")):hover { box-shadow: 0 0 40px rgba(148, 163, 184, 0.6) !important; border-bottom-color: #cbd5e1 !important; }
+
+        /* AI (Violet) */
+        div.stButton > button:has(div:contains("TITAN AI")) { border-bottom-color: #8b5cf6 !important; color: #a78bfa !important; }
+        div.stButton > button:has(div:contains("TITAN AI")):hover { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6) !important; border-bottom-color: #c4b5fd !important; }
+
+
+        /* --- 6. ANIMATION KEYFRAMES (Copy từ HTML) --- */
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spin-reverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
+        @keyframes core-pulse { 0%, 100% { transform: scale(0.9); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
+
+        /* Nebula Classes cho Header */
+        .titan-nebula { position: relative; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; }
+        .nebula-core { width: 12px; height: 12px; background: #3b82f6; border-radius: 50%; box-shadow: 0 0 20px #3b82f6, 0 0 40px #2563eb; animation: core-pulse 4s infinite ease-in-out; z-index: 2; }
+        .nebula-ring-1 { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 2px solid transparent; border-top-color: rgba(96, 165, 250, 0.8); border-right-color: rgba(96, 165, 250, 0.2); animation: spin 8s linear infinite; }
+        .nebula-ring-2 { position: absolute; width: 70%; height: 70%; border-radius: 50%; border: 2px solid transparent; border-bottom-color: rgba(147, 197, 253, 0.8); border-left-color: rgba(147, 197, 253, 0.2); animation: spin-reverse 10s linear infinite; }
+
         </style>
 
-        <!-- CANVAS CHẠY HIỆU ỨNG SAO SAU LƯNG -->
-        <canvas id="warp-canvas"></canvas>
+        <!-- SCRIPT CANVAS SAO BAY (Copy nguyên bản JS) -->
         <script>
             const canvas = document.getElementById('warp-canvas');
-            const ctx = canvas.getContext('2d');
-            let width, height, stars = [];
-            const numStars = 200, speed = 0.5;
+            if(canvas) {
+                const ctx = canvas.getContext('2d');
+                let width, height, stars = [];
+                const numStars = 200, speed = 0.2; // Tốc độ giống bản gốc
 
-            function resize() {
-                width = window.innerWidth;
-                height = window.innerHeight;
-                canvas.width = width;
-                canvas.height = height;
-            }
-
-            class Star {
-                constructor() { this.reset(); }
-                reset() {
-                    this.x = (Math.random() - 0.5) * width * 3;
-                    this.y = (Math.random() - 0.5) * height * 3;
-                    this.z = Math.random() * width;
-                    this.size = Math.random() * 2;
+                function resize() {
+                    width = window.innerWidth;
+                    height = window.innerHeight;
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.translate(width/2, height/2); // Tâm ở giữa như bản gốc
                 }
-                update() {
-                    this.z -= speed;
-                    if (this.z <= 0) { this.reset(); this.z = width; }
+
+                class Star {
+                    constructor() { this.reset(); }
+                    reset() {
+                        this.x = (Math.random() - 0.5) * width * 3;
+                        this.y = (Math.random() - 0.5) * height * 3;
+                        this.z = Math.random() * width;
+                        this.size = Math.random() * 2;
+                        this.pz = this.z;
+                    }
+                    update() {
+                        this.z -= speed;
+                        if (this.z <= 0) { this.reset(); this.z = width; this.pz = this.z; }
+                    }
+                    draw() {
+                        const x = this.x / this.z * 100;
+                        const y = this.y / this.z * 100;
+                        const op = 1 - this.z / width;
+                        
+                        ctx.beginPath();
+                        ctx.arc(x, y, this.size * (op + 0.5), 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(200, 230, 255, ${op * 0.8})`;
+                        ctx.fill();
+                        this.pz = this.z;
+                    }
                 }
-                draw() {
-                    const x = (this.x / this.z) * 100 + width / 2;
-                    const y = (this.y / this.z) * 100 + height / 2;
-                    const opacity = 1 - this.z / width;
-                    ctx.beginPath();
-                    ctx.arc(x, y, this.size * (opacity + 0.5), 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(200, 230, 255, ${opacity})`;
-                    ctx.fill();
+
+                function init() {
+                    resize();
+                    stars = [];
+                    for(let i=0; i<numStars; i++) stars.push(new Star());
+                    animate();
                 }
-            }
 
-            function init() {
-                resize();
-                stars = Array.from({length: numStars}, () => new Star());
-                animate();
-            }
+                function animate() {
+                    ctx.clearRect(-width/2, -height/2, width, height); // Xóa frame cũ
+                    stars.forEach(s => { s.update(); s.draw(); });
+                    requestAnimationFrame(animate);
+                }
 
-            function animate() {
-                ctx.fillStyle = '#000';
-                ctx.fillRect(0, 0, width, height);
-                stars.forEach(s => { s.update(); s.draw(); });
-                requestAnimationFrame(animate);
+                window.addEventListener('resize', () => { resize(); init(); });
+                // Khởi chạy
+                init();
             }
-
-            window.addEventListener('resize', resize);
-            init();
         </script>
     """, unsafe_allow_html=True)
