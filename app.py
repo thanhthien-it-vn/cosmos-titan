@@ -1,93 +1,61 @@
 import streamlit as st
-from utils.database import get_config_all, get_config_value
+from utils.database import get_config_all
+from utils.ui_core import apply_cosmos_style, header_component, footer_component
+from modules.main_menu import render_main_menu
 
-# Cấu hình trang với phong cách chuyên nghiệp
+# --- CẤU HÌNH HỆ THỐNG ---
 st.set_page_config(
-    page_title="COSMOS-TITAN | Next-Gen HRM",
+    page_title="COSMOS-TITAN SYSTEM",
     page_icon="🌌",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# --- PHONG CÁCH GIAO DIỆN (CSS) ---
-st.markdown("""
-    <style>
-    .main { background-color: #0e1117; }
-    .stButton>button {
-        width: 100%;
-        height: 150px;
-        border-radius: 15px;
-        border: 1px solid #30363d;
-        background-color: #161b22;
-        color: #c9d1d9;
-        font-size: 1.2rem;
-        font-weight: bold;
-        transition: all 0.3s;
-    }
-    .stButton>button:hover {
-        border-color: #58a6ff;
-        color: #58a6ff;
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-    }
-    .title-text {
-        text-align: center;
-        color: #58a6ff;
-        font-family: 'Courier New', Courier, monospace;
-        letter-spacing: 5px;
-        margin-bottom: 50px;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+# --- ÁP DỤNG GIAO DIỆN (Lấy từ utils/ui_core.py) ---
+apply_cosmos_style()
 
 def main():
-    st.markdown("<h1 class='title-text'>COSMOS-TITAN SYSTEM</h1>", unsafe_allow_html=True)
+    # 1. Hiển thị Header
+    header_component()
 
-    # Khởi tạo 9 Tab theo sơ đồ 3x3 đã chốt
-    # Hàng 1: Tổng Quan (1), Lương (2), KPI (3)
-    # Hàng 2: Nhân Sự (4), Bảo Hiểm (5), Cấu Hình (6)
-    # Hàng 3: Chấm Công (7), Hậu Cần (8), AI (9)
-    
-    modules = [
-        {"id": 1, "name": "1. TỔNG QUAN", "icon": "📊"},
-        {"id": 2, "name": "2. TIỀN LƯƠNG", "icon": "💰"},
-        {"id": 3, "name": "3. ĐÁNH GIÁ KPI", "icon": "🎯"},
-        {"id": 4, "name": "4. NHÂN SỰ", "icon": "👥"},
-        {"id": 5, "name": "5. THUẾ & BẢO HIỂM", "icon": "📜"},
-        {"id": 6, "name": "6. CẤU HÌNH/ADMIN", "icon": "⚙️"},
-        {"id": 7, "name": "7. CHẤM CÔNG", "icon": "📅"},
-        {"id": 8, "name": "8. HẬU CẦN", "icon": "🚚"},
-        {"id": 9, "name": "9. TITAN AI", "icon": "🧠"}
-    ]
+    # 2. Khởi tạo trạng thái phiên làm việc
+    if 'active_tab' not in st.session_state:
+        st.session_state.active_tab = None
 
-    # Hiển thị lưới 3x3
-    for i in range(0, 9, 3):
-        cols = st.columns(3)
-        for j in range(3):
-            idx = i + j
-            if idx < len(modules):
-                with cols[j]:
-                    if st.button(f"{modules[idx]['icon']}\n\n{modules[idx]['name']}", key=f"btn_{idx}"):
-                        st.session_state.active_tab = modules[idx]['id']
-                        st.rerun()
+    # 3. ĐIỀU HƯỚNG (ROUTER)
+    # Nếu chưa chọn tab nào -> Gọi module Menu để vẽ lưới
+    if st.session_state.active_tab is None:
+        render_main_menu()
+        footer_component()
 
-    # Xử lý khi nhấn vào Tab (Ví dụ demo cho Tab 6 Admin)
-    if 'active_tab' in st.session_state:
-        st.divider()
+    # Nếu đã chọn Tab -> Điều hướng vào trong
+    else:
+        # Nút Quay lại (Dùng chung)
+        if st.button("⬅️ TRỞ VỀ TRẠM CHỈ HUY (MENU)"):
+            st.session_state.active_tab = None
+            st.rerun()
+            
+        # Lấy ID của Tab đang chọn
         tab_id = st.session_state.active_tab
-        st.subheader(f"Đ đang mở: {next(m['name'] for m in modules if m['id'] == tab_id)}")
         
+        # --- ROUTER ĐẾN CÁC MODULE CON ---
         if tab_id == 6:
-            st.info("💡 Đây là trạm điều khiển các tham số 'mềm'.")
+            # Ví dụ: Gọi Module Admin (Sau này sẽ tách file riêng nữa)
+            st.markdown("<h2 style='color:#3b82f6; font-family:Orbitron'>6. CẤU HÌNH HỆ THỐNG</h2>", unsafe_allow_html=True)
+            st.info("Đang kết nối tới Supabase Singapore...")
             configs = get_config_all()
             if configs:
-                st.table(configs)
+                st.dataframe(configs, use_container_width=True)
             else:
-                st.warning("Chưa có dữ liệu cấu hình. Hãy nạp row đầu tiên trên Supabase.")
-        
-        if st.button("⬅️ Quay lại Menu chính"):
-            del st.session_state.active_tab
-            st.rerun()
+                st.warning("Chưa có dữ liệu cấu hình.")
+                
+        elif tab_id == 9:
+            st.markdown("<h2 style='color:#a855f7; font-family:Orbitron'>9. TITAN AI INTELLIGENCE</h2>", unsafe_allow_html=True)
+            st.write("Xin chào, tôi là AI Toàn năng của hệ thống COSMOS-TITAN.")
+            
+        else:
+            # Các module đang xây dựng
+            st.warning(f"🚧 Module {tab_id} đang được Nghệ nhân xây dựng (Frozen UI Mode).")
 
 if __name__ == "__main__":
     main()
